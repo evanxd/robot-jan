@@ -1,0 +1,14 @@
+{
+  "name": "Tamagotchi",
+  "description": "Tamagotchi add-on.",
+  "developer": {
+  	"name": "Evan Tseng"
+  },
+  "role": "addon",
+  "type": "certified",
+  "origin": "app://fxos-tamagotchi.gaiamobile.org/manifest.webapp",
+  "customizations": [{
+    "filter": "app://system.gaiamobile.org",
+    "scripts": ["js/tamagotchi.js", "js/index.js"]
+  }]
+}
