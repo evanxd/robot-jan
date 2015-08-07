@@ -6,27 +6,38 @@
 
   function Tamagotchi(stage) {
     this._stage = stage;
-    this._render();
-    navigator.mozApps.mgmt.addEventListener('enabledstatechange', this);
+    this._sprite = document.createElement('div');
+    this._init();
   }
 
   Tamagotchi.prototype = {
     _stage: null,
+    _sprite: null,
 
-    handleEvent: function(evt) {
+    _init: function() {
+      this._registerEvents();
+      this._render();
+    },
+
+    _registerEvents: function() {
+      navigator.mozApps.mgmt.addEventListener('enabledstatechange',
+        this._handle_enabledstatechange.bind(this));
+      this._sprite.addEventListener('click', function() {
+        navigator.vibrate(50);
+        window.dispatchEvent(new CustomEvent('home'));
+      });
+    },
+
+    _handle_enabledstatechange: function(evt) {
       var app = evt.application;
       if (app.manifestURL !== ORIGIN) {
         return;
       }
-      switch(evt.type) {
-        case 'enabledstatechange':
-          !app.enabled && this._destroy();
-          break;
-      }
+      !app.enabled && this._destroy();
     },
 
     _render: function() {
-      var sprite = document.createElement('div');
+      var sprite = this._sprite;
       sprite.innerHTML = 'ʕ◕ᴥ◕ʔ';
       var style = `
         position: fixed;
