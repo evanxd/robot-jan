@@ -3,6 +3,8 @@
 (function(exports) {
   var ORIGIN = 'app://fxos-tamagotchi.gaiamobile.org/manifest.webapp';
   var SPRITE_ID = 'fxos-tamagotchi';
+  var CLICK_INTERVAL = 250;
+  var HOLD_INTERVAL = 750;
 
   function Tamagotchi(stage) {
     this._stage = stage;
@@ -21,11 +23,27 @@
 
     _registerEvents: function() {
       var sprite = this._sprite;
+      var timerID;
+      var touchStartTimeStamp;
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
-      sprite.addEventListener('click', function() {
-        navigator.vibrate(50);
-        window.dispatchEvent(new CustomEvent('home'));
+      sprite.addEventListener('touchstart', function() {
+        touchStartTimeStamp = new Date();
+        timerID = setTimeout(function() {
+          navigator.vibrate(50);
+          window.dispatchEvent(new CustomEvent('holdhome'));
+        }, HOLD_INTERVAL);
+      });
+      sprite.addEventListener('touchend', function() {
+        var time = new Date() - touchStartTimeStamp;
+        if (time < CLICK_INTERVAL) {
+          navigator.vibrate(50);
+          window.dispatchEvent(new CustomEvent('home'));
+        }
+        if (time < HOLD_INTERVAL) {
+          clearTimeout(timerID);
+          timerID = -1;
+        }
       });
       sprite.addEventListener('touchmove', function(evt) {
         var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
