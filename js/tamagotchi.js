@@ -4,7 +4,7 @@
   var ORIGIN = 'app://fxos-tamagotchi.gaiamobile.org/manifest.webapp';
   var SPRITE_ID = 'fxos-tamagotchi';
   var CLICK_INTERVAL = 250;
-  var HOLD_INTERVAL = 750;
+  var HOLD_INTERVAL = 350;
 
   function Tamagotchi(stage) {
     this._stage = stage;
