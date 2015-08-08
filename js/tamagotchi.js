@@ -20,11 +20,19 @@
     },
 
     _registerEvents: function() {
+      var sprite = this._sprite;
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
-      this._sprite.addEventListener('click', function() {
+      sprite.addEventListener('click', function() {
         navigator.vibrate(50);
         window.dispatchEvent(new CustomEvent('home'));
+      });
+      sprite.addEventListener('touchmove', function(evt) {
+        var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
+        var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
+        sprite.style.bottom = null;
+        sprite.style.top = clientY + 'px';
+        sprite.style.left = clientX + 'px';
       });
     },
 
@@ -38,21 +46,23 @@
 
     _render: function() {
       var sprite = this._sprite;
+      sprite.id = SPRITE_ID;
       sprite.innerHTML = 'ʕ◕ᴥ◕ʔ';
+      this._stage.appendChild(sprite);
+      var left = (screen.width / 2) - 36;
       var style = `
         position: fixed;
-        bottom: 0;
         padding: 0.3rem;
+        bottom: 0;
+        left: ${left}px;
         z-index: 2147483647;
         border-radius: 1rem;
         box-shadow: 0.1rem 0.1rem 0.1rem #000000;
         background-color: rgba(255, 255, 255, 0.5);
         color: #000000;
         font-size: 2rem;
-      `
+      `;
       sprite.setAttribute('style', style);
-      sprite.setAttribute('id', SPRITE_ID);
-      this._stage.appendChild(sprite);
     },
 
     _destroy: function() {
