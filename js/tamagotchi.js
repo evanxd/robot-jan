@@ -111,6 +111,9 @@
         return;
       }
       !app.enabled && this._destroy();
+      navigator.mozSettings.createLock().set(
+        { 'software-button.enabled': !app.enabled }
+      );
     },
 
     _render: function() {
