@@ -18,6 +18,10 @@ div#menu-container {
   line-height: 6.5rem;
 }
 
+.circular-menu .circular-menu-item .circular-menu-item-anchor * {
+  margin-top: 1rem;
+}
+
 .cn-button {
   position: absolute;
   top: 100px;
