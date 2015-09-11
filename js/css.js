@@ -2,18 +2,6 @@
 
 (function() {
   var css = `
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-size: 10pt;
-}
-
-body {
-  color: #fff;
-  background-color: green;
-}
-
 div#menu-container {
   position: absolute;
   top: 0;
@@ -27,16 +15,6 @@ div#menu-container {
   background: -webkit-radial-gradient(transparent 35%, #81bae5 35%);
   background: -moz-radial-gradient(transparent 35%, #81bae5 35%);
   background: radial-gradient(transparent 35%, #81bae5 35%);
-}
-
-.circular-menu .circular-menu-item .circular-menu-item-anchor:hover,
-.circular-menu .circular-menu-item .circular-menu-item-anchor:active,
-.circular-menu .circular-menu-item .circular-menu-item-anchor:focus {
-  background: yellow;
-  background: -webkit-radial-gradient(transparent 35%, yellow 35%);
-  background: -moz-radial-gradient(transparent 35%, yellow 35%);
-  background: radial-gradient(transparent 35%, yellow 35%);
-  color: red;
 }
 
 .cn-button {

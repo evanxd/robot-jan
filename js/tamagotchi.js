@@ -1,7 +1,7 @@
 'use strict';
 
 (function(exports) {
-  var ORIGIN = 'app://fxos-tamagotchi.gaiamobile.org/manifest.webapp';
+  var ORIGIN = 'app://1d60e1eb-b8bb-4443-8d19-e31bb961c460/manifest.webapp';
   var SPRITE_ID = 'fxos-tamagotchi';
   var CLICK_INTERVAL = 250;
   var HOLD_INTERVAL = 350;
@@ -54,7 +54,7 @@
         sprite.style.bottom = null;
         sprite.style.top = clientY + 'px';
         sprite.style.left = clientX + 'px';
-        container.style.top = (clientY - 63) + 'px';
+        container.style.top = (clientY - 83) + 'px';
         container.style.left = (clientX - 61) + 'px';
       });
     },
@@ -82,6 +82,8 @@
         z-index: 2147483647;
       `;
       sprite.setAttribute('style', style);
+      sprite.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
+      container.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
     },
 
     _destroy: function() {
