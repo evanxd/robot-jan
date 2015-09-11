@@ -1,6 +1,7 @@
 'use strict';
 
 (function(exports) {
+  var TASK_MANAGER_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTczQUZBNkI1MDc3MTFFNUI0NDI5NkNCMjMzRkEyMEMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTczQUZBNkE1MDc3MTFFNUI0NDI5NkNCMjMzRkEyMEMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpDODBCRDMxNDUwNkExMUU1QjQ0Mjk2Q0IyMzNGQTIwQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpDODBCRDMxNTUwNkExMUU1QjQ0Mjk2Q0IyMzNGQTIwQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ppv03LMAAAHqSURBVHja7NjNK0RRGMdxw1AsUGYWItFYkI0oNVHKS9l4SzaSlJ1sJGs1fwMLNhRZIGRDFmJBUlZeQ9jMAgsxkZcY31vP4qYZc+7MnTuj7qnPYu48Z+6v0zlnzr2OYDCYkszNYQe0A/6DgGXwmXCvV/Qb7eRUqHGh24SAT9F0Sk1J8mYHjLU5o+gzjhnFWm1RDFkd0I9DxdrmRIzgABoVa4sTEbBU2Isk2hGcx6pibQd6rA54hEXFWk8iRrATJYq1lYkIWCOSdg4aaafYxC0+kyngAYaxhwyZi5kokI1evWnnwQjqgsbaJNJRhGk8/fr+EoNwKtzb9IBL0A7BrQhEqN1BnpUB75ALL94V+2zLaIe9v5n/JBMIYErmXaTT9RzqMWjVHKxAi0LdC2rhxj2urBjBd5zLiPzV3tCGY2zALSu8KN6HBe3GX8jXXdtCEx7l84c8fO1jHVW62sJ4B8yWeRfQXcvBCepwg14JvQbvr/6BeG/UDpTjTHetGrtoke+0B/AVNIR4Xr6I5cFdO5yOKoRckLl1jSzd9Qe0YwRdIfrNoi+WVWyUL8TK/Qqzop/hiXWjNioNywrbjbaZt5nxTxJtyDG8hgl3JPtrxN+K99stlxxwq2Sl+2Ula0ewb/v9oB3QDmhC+xFgANyyExe4J+M2AAAAAElFTkSuQmCC';
   var ORIGIN = 'app://1d60e1eb-b8bb-4443-8d19-e31bb961c460/manifest.webapp';
   // var ORIGIN = 'app://312252e6-67aa-b845-b20d-dda0fbbc67f9/manifest.webapp';
   var SPRITE_ID = 'fxos-tamagotchi';
@@ -30,6 +31,7 @@
       var sprite = this._sprite;
       var container = this._container;
       var taskManager = document.querySelector('#taskManager');
+      var taskManagerText = taskManager.querySelector('.circular-menu-item-anchor');
       var screenOff = document.querySelector('#screenOff');
       this.wifiSharing = document.querySelector('#wifiSharing');
       this.wifiSharingText = document.querySelector('#wifiSharing .circular-menu-item-anchor');
@@ -101,6 +103,8 @@
         container.style.top = (spriteTop - 83) + 'px';
         container.style.left = (spriteLeft - 61) + 'px';
       });
+
+      taskManagerText.innerHTML = '<img src="' + TASK_MANAGER_ICON + '">';
 
       taskManager.addEventListener('click', function() {
         window.dispatchEvent(new CustomEvent('holdhome'));
@@ -196,7 +200,7 @@
       this._menu = new CircularMenu(container);
       var menu = this._menu;
       menu.marginAngle = 2;
-      menu.addItem('taskManager', 'Task Manager');
+      menu.addItem('taskManager', '');
       menu.addItem('wifiSharing', 'Wifi Hotspot');
       menu.addItem('muteAllChannel', 'Mute');
       menu.addItem('screenOff', 'Screen Off');
