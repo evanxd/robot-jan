@@ -27,6 +27,7 @@
       var sprite = this._sprite;
       var container = this._container;
       var taskManager = document.querySelector('#taskManager');
+      var screenOff = document.querySelector('#screenOff');
       var timerID;
       var touchStartTimeStamp;
 
@@ -71,6 +72,10 @@
       taskManager.addEventListener('click', function() {
         window.dispatchEvent(new CustomEvent('holdhome'));
       });
+
+      screenOff.addEventListener('click', function() {
+        window.dispatchEvent(new CustomEvent('sleep'));
+      });
     },
 
     _handle_enabledstatechange: function(evt) {
@@ -104,7 +109,7 @@
       menu.addItem('bb', '');
       menu.addItem('cc', '');
       menu.addItem('dd', '');
-      menu.addItem('ee', '');
+      menu.addItem('screenOff', 'Screen Off');
       menu.render();
       container.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
     },
