@@ -26,28 +26,36 @@
     _registerEvents: function() {
       var sprite = this._sprite;
       var container = this._container;
-      // var timerID;
-      // var touchStartTimeStamp;
+      var timerID;
+      var touchStartTimeStamp;
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
-      // sprite.addEventListener('touchstart', function() {
-      //   touchStartTimeStamp = new Date();
-      //   timerID = setTimeout(function() {
-      //     navigator.vibrate(50);
-      //     window.dispatchEvent(new CustomEvent('holdhome'));
-      //   }, HOLD_INTERVAL);
-      // });
-      // sprite.addEventListener('touchend', function() {
-      //   var time = new Date() - touchStartTimeStamp;
-      //   if (time < CLICK_INTERVAL) {
-      //     navigator.vibrate(50);
-      //     // window.dispatchEvent(new CustomEvent('home'));
-      //   }
-      //   if (time < HOLD_INTERVAL) {
-      //     clearTimeout(timerID);
-      //     timerID = -1;
-      //   }
-      // });
+      sprite.addEventListener('touchstart', () => {
+        touchStartTimeStamp = new Date();
+        timerID = setTimeout(() => {
+          var menu = this._menu;
+          if (!menu.opened) {
+            navigator.vibrate(50);
+            menu.open().then(() => {});
+          }
+        }, HOLD_INTERVAL);
+      });
+      sprite.addEventListener('touchend', () => {
+        var menu = this._menu;
+        var time = new Date() - touchStartTimeStamp;
+        if (time < CLICK_INTERVAL) {
+          navigator.vibrate(50);
+          if (menu.opened) {
+            menu.close();
+          } else {
+            window.dispatchEvent(new CustomEvent('home'));
+          }
+        }
+        if (time < HOLD_INTERVAL) {
+          clearTimeout(timerID);
+          timerID = -1;
+        }
+      });
       sprite.addEventListener('touchmove', function(evt) {
         var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
         var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
@@ -83,6 +91,15 @@
       `;
       sprite.setAttribute('style', style);
       sprite.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
+      this._menu = new CircularMenu(container);
+      var menu = this._menu;
+      menu.marginAngle = 2;
+      menu.addItem('aa', '');
+      menu.addItem('bb', '');
+      menu.addItem('cc', '');
+      menu.addItem('dd', '');
+      menu.addItem('ee', '');
+      menu.render();
       container.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
     },
 
