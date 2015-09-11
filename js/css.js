@@ -141,9 +141,10 @@ div#menu-container {
   cursor: hand;
 }
 `;
-  var head = document.head || document.getElementsByTagName('head')[0];
+  var head = document.head;
   var style = document.createElement('style');
 
+  style.id = 'fxos-tamagotchi-style';
   style.type = 'text/css';
   style.textContent = css;
   head.appendChild(style);

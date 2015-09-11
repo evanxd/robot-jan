@@ -87,10 +87,12 @@
     },
 
     _destroy: function() {
+      var style = document.querySelector('#fxos-tamagotchi-style');
       var sprite = this._sprite;
       var container = this._container;
       sprite.parentNode.removeChild(sprite);
       container.parentNode.removeChild(container);
+      style.parentNode.removeChild(style);
     }
   };
 
