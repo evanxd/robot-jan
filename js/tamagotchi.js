@@ -19,15 +19,17 @@
     _sprite: null,
 
     _init: function() {
-      this._registerEvents();
       this._render();
+      this._registerEvents();
     },
 
     _registerEvents: function() {
       var sprite = this._sprite;
       var container = this._container;
+      var taskManager = document.querySelector('#taskManager');
       var timerID;
       var touchStartTimeStamp;
+
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
       sprite.addEventListener('touchstart', () => {
@@ -65,6 +67,10 @@
         container.style.top = (clientY - 83) + 'px';
         container.style.left = (clientX - 61) + 'px';
       });
+
+      taskManager.addEventListener('click', function() {
+        window.dispatchEvent(new CustomEvent('holdhome'));
+      });
     },
 
     _handle_enabledstatechange: function(evt) {
@@ -94,7 +100,7 @@
       this._menu = new CircularMenu(container);
       var menu = this._menu;
       menu.marginAngle = 2;
-      menu.addItem('aa', '');
+      menu.addItem('taskManager', 'Task Manager');
       menu.addItem('bb', '');
       menu.addItem('cc', '');
       menu.addItem('dd', '');
