@@ -5,6 +5,7 @@
   var SPRITE_ID = 'fxos-tamagotchi';
   var CLICK_INTERVAL = 250;
   var HOLD_INTERVAL = 350;
+  var MOVE_THRESHOLD = 5;
 
   function Tamagotchi(stage) {
     this._stage = stage;
@@ -30,14 +31,21 @@
       var screenOff = document.querySelector('#screenOff');
       var timerID;
       var touchStartTimeStamp;
+      var touchPosition;
+      var moved = false;
 
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
-      sprite.addEventListener('touchstart', () => {
+      sprite.addEventListener('touchstart', (evt) => {
+        touchPosition = {
+          'x': evt.touches[0].clientX,
+          'y': evt.touches[0].clientY
+        };
+        moved = false;
         touchStartTimeStamp = new Date();
         timerID = setTimeout(() => {
           var menu = this._menu;
-          if (!menu.opened) {
+          if (!menu.opened && ! moved) {
             navigator.vibrate(50);
             menu.open().then(() => {});
           }
@@ -60,6 +68,13 @@
         }
       });
       sprite.addEventListener('touchmove', function(evt) {
+        var diffX = touchPosition.x - evt.touches[0].clientX
+        var diffY = touchPosition.y - evt.touches[0].clientY
+        if (Math.abs(diffX) <= MOVE_THRESHOLD &&
+            Math.abs(diffY) <= MOVE_THRESHOLD) {
+          return;
+        }
+        moved = true;
         var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
         var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
         sprite.style.bottom = null;
