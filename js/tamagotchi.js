@@ -23,7 +23,8 @@
     },
 
     _registerEvents: function() {
-      // var sprite = this._sprite;
+      var sprite = this._sprite;
+      var container = this._container;
       // var timerID;
       // var touchStartTimeStamp;
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
@@ -46,13 +47,15 @@
       //     timerID = -1;
       //   }
       // });
-      // sprite.addEventListener('touchmove', function(evt) {
-      //   var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
-      //   var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
-      //   sprite.style.bottom = null;
-      //   sprite.style.top = clientY + 'px';
-      //   sprite.style.left = clientX + 'px';
-      // });
+      sprite.addEventListener('touchmove', function(evt) {
+        var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
+        var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
+        sprite.style.bottom = null;
+        sprite.style.top = clientY + 'px';
+        sprite.style.left = clientX + 'px';
+        container.style.top = clientY + 'px';
+        container.style.left = clientX + 'px';
+      });
     },
 
     _handle_enabledstatechange: function(evt) {
