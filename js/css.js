@@ -15,6 +15,7 @@ div#menu-container {
   background: -webkit-radial-gradient(transparent 35%, #81bae5 35%);
   background: -moz-radial-gradient(transparent 35%, #81bae5 35%);
   background: radial-gradient(transparent 35%, #81bae5 35%);
+  line-height: 6.5rem;
 }
 
 .cn-button {
