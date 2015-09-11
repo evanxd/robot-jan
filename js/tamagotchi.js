@@ -1,8 +1,8 @@
 'use strict';
 
 (function(exports) {
-  // var ORIGIN = 'app://1d60e1eb-b8bb-4443-8d19-e31bb961c460/manifest.webapp';
-  var ORIGIN = 'app://312252e6-67aa-b845-b20d-dda0fbbc67f9/manifest.webapp';
+  var ORIGIN = 'app://1d60e1eb-b8bb-4443-8d19-e31bb961c460/manifest.webapp';
+  // var ORIGIN = 'app://312252e6-67aa-b845-b20d-dda0fbbc67f9/manifest.webapp';
   var SPRITE_ID = 'fxos-tamagotchi';
   var CLICK_INTERVAL = 250;
   var HOLD_INTERVAL = 350;
