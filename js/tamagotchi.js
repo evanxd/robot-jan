@@ -78,6 +78,7 @@
       var style = `
         position: fixed;
         left: ${left}px;
+        bottom: 0;
         z-index: 2147483647;
       `;
       sprite.setAttribute('style', style);
