@@ -30,8 +30,10 @@
       var container = this._container;
       var taskManager = document.querySelector('#taskManager');
       var screenOff = document.querySelector('#screenOff');
-      var wifiSharing = document.querySelector('#wifiSharing');
-      var wifiSharingText = document.querySelector('#wifiSharing .circular-menu-item-anchor');
+      this.wifiSharing = document.querySelector('#wifiSharing');
+      this.wifiSharingText = document.querySelector('#wifiSharing .circular-menu-item-anchor');
+      this.mute = document.querySelector('#muteAllChannel');
+      this.muteText = document.querySelector('#muteAllChannel .circular-menu-item-anchor');
       var timerID;
       var touchStartTimeStamp;
       var touchPosition;
@@ -52,18 +54,10 @@
           var menu = this._menu;
           if (!menu.opened && ! moved) {
             navigator.vibrate(50);
-            var req = navigator.mozSettings.createLock().get(WIFI_SHARING_KEY)
-            req.onsuccess = () => {
-              if (req.result[WIFI_SHARING_KEY] === true) {
-                wifiSharingText.textContent = 'Turn off Wifi Hotspot';
-                wifiSharing.dataset.state = 'on';
-              } else {
-                wifiSharingText.textContent = 'Turn on Wifi Hotspot';
-                wifiSharing.dataset.state = 'off'
-              }
+            this._updateMenuState(() => {
               menu.open().then(() => {});
               longPressed = true;
-            };
+            });
           }
         }, HOLD_INTERVAL);
       });
@@ -115,19 +109,60 @@
         window.dispatchEvent(new CustomEvent('sleep'));
       });
 
-      wifiSharing.addEventListener('click', function() {
-        console.log('current state: ', wifiSharing.dataset.state);
+      this.wifiSharing.addEventListener('click', () => {
         var obj = {};
         obj[WIFI_SHARING_KEY] = ('on' !== wifiSharing.dataset.state);
         if ('on' !== wifiSharing.dataset.state) {
-          wifiSharingText.innerHTML = 'Turn off Wifi Hotspot';
-          wifiSharing.dataset.state = 'on';
+          this.wifiSharingText.innerHTML = 'Turn off Wifi Hotspot';
+          this.wifiSharing.dataset.state = 'on';
         } else {
-          wifiSharingText.innerHTML = 'Turn on Wifi Hotspot';
-          wifiSharing.dataset.state = 'off'
+          this.wifiSharingText.innerHTML = 'Turn on Wifi Hotspot';
+          this.wifiSharing.dataset.state = 'off'
         }
         navigator.mozSettings.createLock().set(obj);
       });
+
+      this.mute.addEventListener('click', () => {
+        var sm = window.wrappedJSObject.core.soundManager;
+        if ('muted' === this.mute.dataset.state) {
+          this.muteText.textContent = 'Mute';
+          this.mute.dataset.state = 'unmuted'
+          sm.changeVolume(10, 'content');
+          sm.changeVolume(10, 'alarm');
+          sm.changeVolume(10, 'notification');
+        } else {
+          this.muteText.textContent = 'Unmute';
+          this.mute.dataset.state = 'muted'
+          sm.changeVolume(-sm.currentVolume['content'] - 1, 'content');
+          sm.changeVolume(-sm.currentVolume['alarm'] - 1, 'alarm');
+          sm.changeVolume(-sm.currentVolume['notification'] - 1, 'notification');
+        }
+      });
+    },
+
+    _updateMenuState: function(callback) {
+      var req = navigator.mozSettings.createLock().get(WIFI_SHARING_KEY)
+      req.onsuccess = () => {
+        if (req.result[WIFI_SHARING_KEY] === true) {
+          this.wifiSharingText.textContent = 'Turn off Wifi Hotspot';
+          this.wifiSharing.dataset.state = 'on';
+        } else {
+          this.wifiSharingText.textContent = 'Turn on Wifi Hotspot';
+          this.wifiSharing.dataset.state = 'off'
+        }
+        callback();
+      };
+      var sm = window.wrappedJSObject.core.soundManager;
+      var muted = sm.currentVolume['content'] <= 0 &&
+                  sm.currentVolume['alarm'] <= 0 &&
+                  sm.currentVolume['notification'] <= 0;
+      if (muted) {
+        this.muteText.textContent = 'Unmute';
+        this.mute.dataset.state = 'muted'
+      } else {
+        this.muteText.textContent = 'Mute';
+        this.mute.dataset.state = 'unmuted'
+      }
     },
 
     _handle_enabledstatechange: function(evt) {
@@ -162,7 +197,7 @@
       menu.marginAngle = 2;
       menu.addItem('taskManager', 'Task Manager');
       menu.addItem('wifiSharing', 'Wifi Hotspot');
-      menu.addItem('cc', '');
+      menu.addItem('muteAllChannel', 'Mute');
       menu.addItem('dd', '');
       menu.addItem('screenOff', 'Screen Off');
       menu.render();
