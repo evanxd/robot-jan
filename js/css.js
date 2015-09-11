@@ -18,8 +18,8 @@ div#menu-container {
   position: absolute;
   top: 0;
   left: 0;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
 }
 
 .circular-menu .circular-menu-item .circular-menu-item-anchor {

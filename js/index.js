@@ -24,11 +24,11 @@
     var container = document.getElementById('menu-container');
     var menu = new CircularMenu(container);
     menu.marginAngle = 2;
-    menu.addItem('aa', 'AAAAAAAAAAAAAAA');
-    menu.addItem('bb', 'BBBBBBBBBBBBBBB');
-    menu.addItem('cc', 'CCCCCCCCCCCCCCC');
-    menu.addItem('dd', 'DDDDDDDDDDDDDDD');
-    menu.addItem('ee', 'EEEEEEEEEEEEEEE');
+    menu.addItem('aa', '');
+    menu.addItem('bb', '');
+    menu.addItem('cc', '');
+    menu.addItem('dd', '');
+    menu.addItem('ee', '');
     menu.render();
 
     changeButtonText();

@@ -54,8 +54,8 @@
         sprite.style.bottom = null;
         sprite.style.top = clientY + 'px';
         sprite.style.left = clientX + 'px';
-        container.style.top = clientY + 'px';
-        container.style.left = clientX + 'px';
+        container.style.top = (clientY - 63) + 'px';
+        container.style.left = (clientX - 61) + 'px';
       });
     },
 

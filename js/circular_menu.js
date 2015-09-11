@@ -121,15 +121,15 @@
       };
       this._enlargeMenus()
         .then(this._rotateMenus.bind(this, true), reset)
-        .then(() => {
-          this.container.classList.remove('opening');
-          this.container.classList.add('opened');
-          resolve();
-        }, reset)
         .catch((e) => {
           console.error(e.toString());
           reject();
         });
+      setTimeout(() => {
+        this.container.classList.remove('opening');
+        this.container.classList.add('opened');
+        resolve();
+      }, 100);
     });
   };
 
