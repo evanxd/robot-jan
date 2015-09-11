@@ -33,6 +33,7 @@
       var touchStartTimeStamp;
       var touchPosition;
       var moved = false;
+      var longPressed = false;
 
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
@@ -42,16 +43,21 @@
           'y': evt.touches[0].clientY
         };
         moved = false;
+        longPressed = false;
         touchStartTimeStamp = new Date();
         timerID = setTimeout(() => {
           var menu = this._menu;
           if (!menu.opened && ! moved) {
             navigator.vibrate(50);
             menu.open().then(() => {});
+            longPressed = true;
           }
         }, HOLD_INTERVAL);
       });
       sprite.addEventListener('touchend', () => {
+        if (moved || longPressed) {
+          return;
+        }
         var menu = this._menu;
         var time = new Date() - touchStartTimeStamp;
         if (time < CLICK_INTERVAL) {
