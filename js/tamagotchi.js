@@ -8,7 +8,8 @@
 
   function Tamagotchi(stage) {
     this._stage = stage;
-    this._sprite = document.createElement('div');
+    this._sprite = document.createElement('button');
+    this._container = document.createElement('div');
     this._init();
   }
 
@@ -22,36 +23,36 @@
     },
 
     _registerEvents: function() {
-      var sprite = this._sprite;
-      var timerID;
-      var touchStartTimeStamp;
+      // var sprite = this._sprite;
+      // var timerID;
+      // var touchStartTimeStamp;
       navigator.mozApps.mgmt.addEventListener('enabledstatechange',
         this._handle_enabledstatechange.bind(this));
-      sprite.addEventListener('touchstart', function() {
-        touchStartTimeStamp = new Date();
-        timerID = setTimeout(function() {
-          navigator.vibrate(50);
-          window.dispatchEvent(new CustomEvent('holdhome'));
-        }, HOLD_INTERVAL);
-      });
-      sprite.addEventListener('touchend', function() {
-        var time = new Date() - touchStartTimeStamp;
-        if (time < CLICK_INTERVAL) {
-          navigator.vibrate(50);
-          window.dispatchEvent(new CustomEvent('home'));
-        }
-        if (time < HOLD_INTERVAL) {
-          clearTimeout(timerID);
-          timerID = -1;
-        }
-      });
-      sprite.addEventListener('touchmove', function(evt) {
-        var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
-        var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
-        sprite.style.bottom = null;
-        sprite.style.top = clientY + 'px';
-        sprite.style.left = clientX + 'px';
-      });
+      // sprite.addEventListener('touchstart', function() {
+      //   touchStartTimeStamp = new Date();
+      //   timerID = setTimeout(function() {
+      //     navigator.vibrate(50);
+      //     window.dispatchEvent(new CustomEvent('holdhome'));
+      //   }, HOLD_INTERVAL);
+      // });
+      // sprite.addEventListener('touchend', function() {
+      //   var time = new Date() - touchStartTimeStamp;
+      //   if (time < CLICK_INTERVAL) {
+      //     navigator.vibrate(50);
+      //     // window.dispatchEvent(new CustomEvent('home'));
+      //   }
+      //   if (time < HOLD_INTERVAL) {
+      //     clearTimeout(timerID);
+      //     timerID = -1;
+      //   }
+      // });
+      // sprite.addEventListener('touchmove', function(evt) {
+      //   var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
+      //   var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
+      //   sprite.style.bottom = null;
+      //   sprite.style.top = clientY + 'px';
+      //   sprite.style.left = clientX + 'px';
+      // });
     },
 
     _handle_enabledstatechange: function(evt) {
@@ -64,9 +65,11 @@
 
     _render: function() {
       var sprite = this._sprite;
+      var container = this._container;
       sprite.id = SPRITE_ID;
-      sprite.innerHTML = 'ʕ◕ᴥ◕ʔ';
       this._stage.appendChild(sprite);
+      container.id = 'menu-container';
+      this._stage.appendChild(container);
       var left = (screen.width / 2) - 36;
       var style = `
         position: fixed;
@@ -84,8 +87,10 @@
     },
 
     _destroy: function() {
-      var sprite = document.querySelector('#' + SPRITE_ID);
+      var sprite = this._sprite;
+      var container = this._container;
       sprite.parentNode.removeChild(sprite);
+      container.parentNode.removeChild(container);
     }
   };
 

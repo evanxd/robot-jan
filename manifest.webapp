@@ -9,6 +9,11 @@
   "origin": "app://fxos-tamagotchi.gaiamobile.org/manifest.webapp",
   "customizations": [{
     "filter": "app://system.gaiamobile.org",
-    "scripts": ["js/tamagotchi.js", "js/index.js"]
+    "scripts": [
+      "js/css.js",
+      "js/circular_menu.js",
+      "js/tamagotchi.js",
+      "js/index.js"
+    ]
   }]
 }
