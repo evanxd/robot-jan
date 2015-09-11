@@ -6,6 +6,7 @@
   var CLICK_INTERVAL = 250;
   var HOLD_INTERVAL = 350;
   var MOVE_THRESHOLD = 5;
+  var WIFI_SHARING_KEY = 'tethering.wifi.enabled';
 
   function Tamagotchi(stage) {
     this._stage = stage;
@@ -29,6 +30,8 @@
       var container = this._container;
       var taskManager = document.querySelector('#taskManager');
       var screenOff = document.querySelector('#screenOff');
+      var wifiSharing = document.querySelector('#wifiSharing');
+      var wifiSharingText = document.querySelector('#wifiSharing .circular-menu-item-anchor');
       var timerID;
       var touchStartTimeStamp;
       var touchPosition;
@@ -49,8 +52,18 @@
           var menu = this._menu;
           if (!menu.opened && ! moved) {
             navigator.vibrate(50);
-            menu.open().then(() => {});
-            longPressed = true;
+            var req = navigator.mozSettings.createLock().get(WIFI_SHARING_KEY)
+            req.onsuccess = () => {
+              if (req.result[WIFI_SHARING_KEY] === true) {
+                wifiSharingText.textContent = 'Turn off Wifi Hotspot';
+                wifiSharing.dataset.state = 'on';
+              } else {
+                wifiSharingText.textContent = 'Turn on Wifi Hotspot';
+                wifiSharing.dataset.state = 'off'
+              }
+              menu.open().then(() => {});
+              longPressed = true;
+            };
           }
         }, HOLD_INTERVAL);
       });
@@ -87,8 +100,6 @@
         moved = true;
         var spriteTop = sprite.offsetTop - diffY;
         var spriteLeft = sprite.offsetLeft - diffX;
-        console.log('spriteTop: ', sprite.offsetTop);
-        console.log('diffY: ', diffY);
         sprite.style.bottom = null;
         sprite.style.top = spriteTop + 'px';
         sprite.style.left = spriteLeft + 'px';
@@ -102,6 +113,20 @@
 
       screenOff.addEventListener('click', function() {
         window.dispatchEvent(new CustomEvent('sleep'));
+      });
+
+      wifiSharing.addEventListener('click', function() {
+        console.log('current state: ', wifiSharing.dataset.state);
+        var obj = {};
+        obj[WIFI_SHARING_KEY] = ('on' !== wifiSharing.dataset.state);
+        if ('on' !== wifiSharing.dataset.state) {
+          wifiSharingText.innerHTML = 'Turn off Wifi Hotspot';
+          wifiSharing.dataset.state = 'on';
+        } else {
+          wifiSharingText.innerHTML = 'Turn on Wifi Hotspot';
+          wifiSharing.dataset.state = 'off'
+        }
+        navigator.mozSettings.createLock().set(obj);
       });
     },
 
@@ -136,7 +161,7 @@
       var menu = this._menu;
       menu.marginAngle = 2;
       menu.addItem('taskManager', 'Task Manager');
-      menu.addItem('bb', '');
+      menu.addItem('wifiSharing', 'Wifi Hotspot');
       menu.addItem('cc', '');
       menu.addItem('dd', '');
       menu.addItem('screenOff', 'Screen Off');
