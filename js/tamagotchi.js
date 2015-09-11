@@ -80,14 +80,20 @@
             Math.abs(diffY) <= MOVE_THRESHOLD) {
           return;
         }
+        touchPosition = {
+          'x': evt.touches[0].clientX,
+          'y': evt.touches[0].clientY
+        };
         moved = true;
-        var clientX = evt.touches[0].clientX - (sprite.offsetWidth / 2);
-        var clientY = evt.touches[0].clientY - (sprite.offsetHeight / 2);
+        var spriteTop = sprite.offsetTop - diffY;
+        var spriteLeft = sprite.offsetLeft - diffX;
+        console.log('spriteTop: ', sprite.offsetTop);
+        console.log('diffY: ', diffY);
         sprite.style.bottom = null;
-        sprite.style.top = clientY + 'px';
-        sprite.style.left = clientX + 'px';
-        container.style.top = (clientY - 83) + 'px';
-        container.style.left = (clientX - 61) + 'px';
+        sprite.style.top = spriteTop + 'px';
+        sprite.style.left = spriteLeft + 'px';
+        container.style.top = (spriteTop - 83) + 'px';
+        container.style.left = (spriteLeft - 61) + 'px';
       });
 
       taskManager.addEventListener('click', function() {
