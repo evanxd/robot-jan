@@ -1,6 +1,11 @@
 {
-  "name": "Tamagotchi",
-  "description": "Tamagotchi add-on.",
+  "name": "Robot Jan",
+  "description": "Robot Jan is a Firefox OS add-on that helps users use and configure their phone easier and faster.",
+  "authors": [
+    "Evan Tseng <evan@tseng.io>",
+    "John Hu <im@john.hu>",
+    "Carol Huang <chuang@mozilla.com>"
+  ],
   "developer": {
   	"name": "Evan Tseng"
   },
