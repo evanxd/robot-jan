@@ -6,15 +6,5 @@
     "John Hu <im@john.hu>",
     "Carol Huang <chuang@mozilla.com>"
   ],
-  "role": "addon",
-  "type": "certified",
-  "customizations": [{
-    "filter": "app://system.gaiamobile.org",
-    "scripts": [
-      "js/css.js",
-      "js/circular_menu.js",
-      "js/tamagotchi.js",
-      "js/index.js"
-    ]
-  }]
+  "package_path": "package.zip"
 }
