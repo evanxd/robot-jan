@@ -183,7 +183,7 @@
 
     _handle_enabledstatechange: function(evt) {
       var app = evt.application;
-      if (app.manifestURL !== ORIGIN) {
+      if (app.manifest.name !== 'Robot Jan') {
         return;
       }
       !app.enabled && this._destroy();
