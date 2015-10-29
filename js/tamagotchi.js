@@ -38,8 +38,8 @@
       var container = this._container;
       var taskManager = document.querySelector('#taskManager');
       var taskManagerText = taskManager.querySelector('.circular-menu-item-anchor');
-      var newFeature = document.querySelector('#newFeature');
-      var newFeatureText = newFeature.querySelector('.circular-menu-item-anchor');
+      var flashLight = document.querySelector('#flashLight');
+      var flashLightText = flashLight.querySelector('.circular-menu-item-anchor');
       var screenOff = document.querySelector('#screenOff');
       var screenOffText = screenOff.querySelector('.circular-menu-item-anchor');
       this.wifiSharing = document.querySelector('#wifiSharing');
@@ -115,7 +115,7 @@
 
       taskManagerText.innerHTML = '<img src="' + TASK_MANAGER_ICON + '">';
       screenOffText.innerHTML = '<img src="' + SCREEN_OFF_ICON + '">';
-      newFeatureText.innerHTML = '<img src="' + ADD_FEATURE_ICON + '">';
+      flashLightText.innerHTML = '<img src="' + ADD_FEATURE_ICON + '">';
 
       taskManager.addEventListener('click', function() {
         window.dispatchEvent(new CustomEvent('holdhome'));
@@ -152,6 +152,28 @@
           sm.changeVolume(-sm.currentVolume['content'] - 1, 'content');
           sm.changeVolume(-sm.currentVolume['alarm'] - 1, 'alarm');
           sm.changeVolume(-sm.currentVolume['notification'] - 1, 'notification');
+        }
+      });
+
+      var isFlashOn = false;
+      var cameraId = window.navigator.mozCameras.getListOfCameras()[0];
+      var camera;
+      flashLight.addEventListener('click', function() {
+        if (isFlashOn) {
+          camera.release();
+          isFlashOn = false;
+        } else {
+          window.navigator.mozCameras.getCamera(cameraId, { mode: 'video' })
+          .then(function (result) {
+            camera = result.camera;
+            camera.flashMode = 'torch';
+          }, function (error) {
+            console.log(error);
+          })
+          .catch(function (e) {
+            console.log('catch', e);
+          });
+          isFlashOn = true;
         }
       });
     },
@@ -215,7 +237,7 @@
       menu.addItem('wifiSharing', '');
       menu.addItem('muteAllChannel', '');
       menu.addItem('screenOff', '');
-      menu.addItem('newFeature', '');
+      menu.addItem('flashLight', '');
       menu.render();
       container.setAttribute('data-z-index-level', 'fullscreen-layout-software-home-button');
       container.style.top = (window.innerHeight - 183) + 'px';
